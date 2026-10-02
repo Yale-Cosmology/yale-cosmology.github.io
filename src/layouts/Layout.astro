@@ -42,7 +42,7 @@ const canonical = Astro.site
         <span class="brand-yale" aria-hidden="true">&#xF2A2;</span>
         <span class="brand-seminar">Cosmology Seminar</span>
       </a>
-      <nav aria-label="Main navigation">
+      <nav class="desktop-nav" aria-label="Main navigation">
         {links.map((link) => (
           <a
             href={localUrl(link.href)}
@@ -52,6 +52,23 @@ const canonical = Astro.site
           </a>
         ))}
       </nav>
+      <details class="mobile-menu">
+        <summary aria-label="Main menu">
+          <svg class="menu-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+            <path d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+          <svg class="close-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+            <path d="m6 6 12 12M18 6 6 18" />
+          </svg>
+        </summary>
+        <nav aria-label="Main navigation">
+          {links.map((link) => (
+            <a href={localUrl(link.href)} aria-current={active === link.id ? "page" : undefined}>
+              {link.label}
+            </a>
+          ))}
+        </nav>
+      </details>
     </header>
     <main id="main" class="shell" tabindex="-1">
       {sample && (

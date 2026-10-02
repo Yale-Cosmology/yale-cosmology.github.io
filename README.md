@@ -65,7 +65,7 @@ Open `/cosmology-seminar/` on the preview server. For ordinary local use, rebuil
 
 ## Design and boundaries
 
-System fonts, deep blue accents, responsive layout, semantic headings/table, keyboard focus indicators, a skip link, and image alternative text. The mobile schedule scrolls horizontally in its own keyboard-focusable region. Only the three requested pages are generated; there are no archives, individual talk pages, feeds, search, external font requests, or client-side scripts.
+System fonts, deep blue accents, responsive layout, semantic headings/table, keyboard focus indicators, a native HTML hamburger menu on screens up to 1000px, a skip link, and image alternative text. The mobile schedule scrolls horizontally in its own keyboard-focusable region. Only the three requested pages are generated; there are no archives, individual talk pages, feeds, search, external font requests, or client-side scripts.
 
 ## Yale mark
 

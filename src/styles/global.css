@@ -15,7 +15,7 @@
   --line: #dce3e9;
   --wash: #f2f6f9;
   font-family: Arial, Helvetica, sans-serif;
-  font-size: 137.5%;
+  font-size: 125%;
   color: var(--ink);
   background: #fff;
   font-synthesis: none;
@@ -35,6 +35,7 @@ a:hover {
   text-decoration-thickness: 2px;
 }
 a:focus-visible,
+summary:focus-visible,
 [tabindex]:focus-visible {
   outline: 3px solid #bc7523;
   outline-offset: 5px;
@@ -65,7 +66,7 @@ img {
 }
 .brand-yale {
   font-family: "Yale Logo", serif;
-  font-size: 2.45rem;
+  font-size: 3.1rem;
   line-height: 1;
   font-weight: 400;
   letter-spacing: normal;
@@ -87,7 +88,7 @@ nav {
   flex-wrap: wrap;
 }
 nav a {
-  font-size: 1.15rem;
+  font-size: 0.9rem;
   font-weight: 600;
   text-decoration: none;
   color: var(--muted);
@@ -96,6 +97,31 @@ nav a {
 nav a[aria-current="page"] {
   color: var(--blue);
   box-shadow: 0 2px var(--blue);
+}
+.mobile-menu {
+  display: none;
+}
+.mobile-menu summary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  color: var(--blue);
+  cursor: pointer;
+  list-style: none;
+}
+.mobile-menu summary::-webkit-details-marker {
+  display: none;
+}
+.mobile-menu .close-icon,
+.mobile-menu[open] .menu-icon {
+  display: none;
+}
+.mobile-menu[open] .close-icon {
+  display: block;
 }
 main {
   min-height: 65vh;
@@ -355,9 +381,38 @@ tr.featured {
 }
 @media (max-width: 1000px) {
   .site-header {
-    align-items: flex-start;
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 44px;
+    gap: 12px;
+    align-items: center;
+  }
+  .desktop-nav {
+    display: none;
+  }
+  .mobile-menu {
+    display: block;
+  }
+  .mobile-menu nav {
+    position: absolute;
+    z-index: 10;
+    top: calc(100% + 1px);
+    left: 0;
+    right: 0;
+    display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 4px;
+    padding: 12px 20px;
+    background: #fff;
+    border: 1px solid var(--line);
+    box-shadow: 0 8px 18px rgb(18 60 97 / 10%);
+  }
+  .mobile-menu nav a {
+    min-height: 44px;
+    padding: 8px 0;
+  }
+  .brand {
+    min-width: 0;
   }
   .shell {
     width: calc(100% - 48px);
@@ -385,20 +440,20 @@ tr.featured {
     padding-block: 24px;
   }
   .brand-yale {
-    font-size: 2.2rem;
+    font-size: 2.25rem;
   }
   .brand {
-    gap: 12px;
+    gap: 10px;
   }
   .brand-seminar {
-    font-size: 1.35rem;
-    padding-left: 12px;
+    font-size: 1.15rem;
+    padding-left: 10px;
   }
   nav {
     gap: 10px 20px;
   }
   nav a {
-    font-size: 1.1rem;
+    font-size: 0.9rem;
   }
   .page-intro {
     padding-block: 34px 28px;
@@ -440,6 +495,7 @@ tr.featured {
 }
 @media print {
   .site-header nav,
+  .mobile-menu,
   .sample-notice,
   .skip-link,
   .page-bottom {
