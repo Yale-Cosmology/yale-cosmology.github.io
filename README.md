@@ -46,9 +46,9 @@ Malformed dates/times, duplicate IDs, unmatched talk IDs, or missing referenced 
 
 ## GitHub Pages
 
-Repository: https://github.com/dutra/yale-cosmology-seminar
+Repository: https://github.com/Yale-Cosmology/yale-cosmology.github.io
 
-Website: https://dutra.github.io/yale-cosmology-seminar/
+Website: https://yale-cosmology.github.io/
 
 GitHub Pages is configured to publish through GitHub Actions. Push updates to `main` to publish automatically, or run **Deploy seminar website** manually from the Actions tab.
 
