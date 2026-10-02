@@ -1,0 +1,469 @@
+/* Official YaleMarks logo font; provenance is documented in README.md. */
+@font-face {
+  font-family: "Yale Logo";
+  src: url("../assets/yalemarks.woff") format("woff");
+  font-style: normal;
+  font-weight: 400;
+  font-display: block;
+}
+
+:root {
+  color-scheme: light;
+  --blue: #123c61;
+  --ink: #202c36;
+  --muted: #425563;
+  --line: #dce3e9;
+  --wash: #f2f6f9;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 137.5%;
+  color: var(--ink);
+  background: #fff;
+  font-synthesis: none;
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  line-height: 1.65;
+}
+a {
+  color: var(--blue);
+  text-underline-offset: 0.22em;
+}
+a:hover {
+  text-decoration-thickness: 2px;
+}
+a:focus-visible,
+[tabindex]:focus-visible {
+  outline: 3px solid #bc7523;
+  outline-offset: 5px;
+}
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+.shell {
+  width: min(1320px, calc(100% - 80px));
+  margin-inline: auto;
+}
+.site-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  padding-block: 32px;
+  border-bottom: 1px solid var(--line);
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  text-decoration: none;
+}
+.brand-yale {
+  font-family: "Yale Logo", serif;
+  font-size: 2.45rem;
+  line-height: 1;
+  font-weight: 400;
+  letter-spacing: normal;
+  color: #00356b;
+  flex-shrink: 0;
+}
+.brand-seminar {
+  font-size: 1.65rem;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.025em;
+  border-left: 1px solid #b9c8d4;
+  padding-left: 20px;
+  white-space: normal;
+}
+nav {
+  display: flex;
+  gap: 25px;
+  flex-wrap: wrap;
+}
+nav a {
+  font-size: 1.15rem;
+  font-weight: 600;
+  text-decoration: none;
+  color: var(--muted);
+  padding-block: 7px;
+}
+nav a[aria-current="page"] {
+  color: var(--blue);
+  box-shadow: 0 2px var(--blue);
+}
+main {
+  min-height: 65vh;
+  padding-bottom: 70px;
+}
+.page-intro {
+  padding-block: 48px 35px;
+}
+.eyebrow {
+  text-transform: none;
+  letter-spacing: 0.02em;
+  font-size: 0.9rem;
+  font-weight: 650;
+  color: var(--muted);
+  margin: 0 0 9px;
+}
+h1,
+h2,
+h3,
+p,
+figure {
+  margin-top: 0;
+}
+h1 {
+  font-size: 2.4rem;
+  line-height: 1.18;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  color: var(--blue);
+  margin-bottom: 14px;
+}
+.intro-copy {
+  color: var(--muted);
+  margin: 0;
+  font-size: 1rem;
+}
+.semester-organizers {
+  margin: 16px 0 0;
+}
+.sample-notice {
+  margin-top: 24px;
+  padding: 10px 16px;
+  background: #f7f5ee;
+  border-left: 3px solid #b7a675;
+  font-size: 0.9rem;
+  color: #63583a;
+}
+.talk-overview {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 48px;
+  border-top: 1px solid var(--line);
+  padding-top: 34px;
+}
+.portrait {
+  margin: 0;
+}
+.portrait img {
+  width: 220px;
+  aspect-ratio: 6/7;
+  object-fit: cover;
+  background: var(--wash);
+}
+.speaker {
+  font-size: 1.2rem;
+  font-weight: 650;
+  color: var(--blue);
+  margin-bottom: 0;
+}
+.affiliation {
+  font-size: 1rem;
+  color: var(--muted);
+  margin-bottom: 16px;
+}
+.talk-title {
+  font-size: 2rem;
+  line-height: 1.3;
+  font-weight: 600;
+  margin-block: 18px 26px;
+  color: var(--ink);
+  overflow-wrap: anywhere;
+}
+.logistics {
+  margin: 0;
+  display: grid;
+  gap: 8px;
+}
+.logistics > div {
+  display: grid;
+  grid-template-columns: 85px 1fr;
+  gap: 16px;
+}
+dt {
+  font-size: 0.9rem;
+  text-transform: none;
+  letter-spacing: 0.01em;
+  color: var(--muted);
+  padding-top: 3px;
+}
+dd {
+  margin: 0;
+}
+.timezone {
+  margin-left: 0.65em;
+  color: var(--muted);
+  font-size: 0.9rem;
+  display: inline-block;
+}
+.prose {
+  max-width: 740px;
+  font-size: 1rem;
+  overflow-wrap: anywhere;
+}
+.prose p {
+  margin-bottom: 1.15em;
+}
+.prose h2 {
+  font-size: 1.55rem;
+  line-height: 1.35;
+  font-weight: 600;
+  color: var(--blue);
+  margin-block: 2rem 1rem;
+}
+.prose h3 {
+  font-size: 1rem;
+  margin-block: 1.7rem 0.55rem;
+  color: var(--blue);
+}
+.prose hr {
+  border: 0;
+  border-top: 1px solid var(--line);
+  margin-block: 32px;
+}
+.abstract {
+  margin-top: 38px;
+  margin-left: 268px;
+}
+.abstract h2 {
+  font-size: 1.3rem;
+  margin-top: 0;
+}
+.page-bottom {
+  border-top: 1px solid var(--line);
+  padding-top: 24px;
+  margin-top: 40px;
+}
+.text-link {
+  font-size: 1rem;
+  text-decoration: none;
+}
+.text-link span {
+  margin-left: 8px;
+}
+.site-footer {
+  border-top: 1px solid var(--line);
+  padding-block: 23px 32px;
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+.table-scroll {
+  overflow-x: auto;
+}
+table {
+  border-collapse: collapse;
+  width: 100%;
+  min-width: 1240px;
+  font-size: 1rem;
+  text-align: left;
+}
+th {
+  font-size: 0.9rem;
+  text-transform: none;
+  letter-spacing: 0.01em;
+  font-weight: 600;
+  color: var(--muted);
+  border-top: 1px solid var(--line);
+  padding: 13px 16px;
+}
+td {
+  padding: 22px 16px;
+  border-top: 1px solid var(--line);
+  vertical-align: top;
+  min-width: 105px;
+  overflow-wrap: break-word;
+}
+th:first-child,
+td:first-child {
+  padding-left: 16px;
+  width: 18%;
+}
+th:nth-child(3) {
+  width: 23%;
+}
+th:nth-child(4) {
+  width: 20%;
+}
+tbody {
+  border-bottom: 1px solid var(--line);
+}
+tr.featured {
+  background: var(--wash);
+}
+.table-speaker {
+  display: block;
+  font-weight: 600;
+}
+.table-affiliation {
+  display: block;
+  color: var(--muted);
+  font-size: 0.95rem;
+  margin-top: 5px;
+}
+.featured-label {
+  display: block;
+  color: var(--blue);
+  text-transform: none;
+  font-size: 0.9rem;
+  letter-spacing: 0.01em;
+  margin-bottom: 6px;
+}
+.empty-state {
+  padding: 32px;
+  background: var(--wash);
+}
+.empty-state h2 {
+  font-size: 1.6rem;
+  line-height: 1.35;
+  font-weight: 600;
+}
+.empty-state p {
+  margin-bottom: 0;
+}
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+.skip-link {
+  position: absolute;
+  top: -100px;
+  left: 20px;
+  background: #fff;
+  padding: 10px;
+  z-index: 5;
+}
+.skip-link:focus {
+  top: 10px;
+}
+@media (max-width: 1000px) {
+  .site-header {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .shell {
+    width: calc(100% - 48px);
+  }
+  .talk-overview {
+    grid-template-columns: 180px 1fr;
+    gap: 28px;
+  }
+  .abstract {
+    margin-left: 208px;
+  }
+  .portrait img {
+    width: 180px;
+  }
+  .site-footer {
+    flex-direction: column;
+    gap: 4px;
+  }
+}
+@media (max-width: 560px) {
+  .shell {
+    width: calc(100% - 40px);
+  }
+  .site-header {
+    padding-block: 24px;
+  }
+  .brand-yale {
+    font-size: 2.2rem;
+  }
+  .brand {
+    gap: 12px;
+  }
+  .brand-seminar {
+    font-size: 1.35rem;
+    padding-left: 12px;
+  }
+  nav {
+    gap: 10px 20px;
+  }
+  nav a {
+    font-size: 1.1rem;
+  }
+  .page-intro {
+    padding-block: 34px 28px;
+  }
+  h1 {
+    font-size: 2.2rem;
+  }
+  .talk-overview {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    padding-top: 26px;
+  }
+  .portrait img {
+    width: 160px;
+  }
+  .talk-title {
+    font-size: 1.8rem;
+  }
+  .abstract {
+    margin-left: 0;
+    margin-top: 32px;
+  }
+  .logistics > div {
+    grid-template-columns: 80px 1fr;
+    gap: 12px;
+  }
+  table {
+    min-width: 1240px;
+  }
+  .sample-notice {
+    font-size: 0.9rem;
+  }
+  main {
+    padding-bottom: 44px;
+  }
+  .prose {
+    font-size: 1rem;
+  }
+}
+@media print {
+  .site-header nav,
+  .sample-notice,
+  .skip-link,
+  .page-bottom {
+    display: none;
+  }
+  .shell {
+    width: 100%;
+  }
+  main {
+    padding: 0;
+  }
+  .site-footer {
+    margin-top: 30px;
+  }
+  .table-scroll {
+    overflow: visible;
+  }
+  table {
+    min-width: 0;
+  }
+  .talk-overview {
+    break-inside: avoid;
+  }
+  a {
+    color: inherit;
+  }
+}

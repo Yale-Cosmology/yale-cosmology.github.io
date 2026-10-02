@@ -1,0 +1,82 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { frontmatter } from "../../content/current-speaker.md";
+import {
+  loadContent,
+  display,
+  formatDate,
+  formatTime,
+} from "../lib/content.mjs";
+import { localUrl } from "../lib/site";
+const { talks, current, semester, organizers, sample } = loadContent(frontmatter);
+---
+
+<Layout title="Semester schedule" active="schedule" sample={sample}>
+  <div class="page-intro">
+    <p class="eyebrow">{semester}</p>
+    <h1>Semester schedule</h1>
+    <p class="intro-copy">All times are Eastern Time, local to New Haven.</p>
+    {organizers.length > 0 && (
+      <p class="semester-organizers">
+        <strong>{semester} organizers:</strong>{" "}
+        {new Intl.ListFormat("en", { style: "long", type: "conjunction" }).format(organizers)}
+      </p>
+    )}
+  </div>
+  {talks.length ? (
+    <div
+      class="table-scroll"
+      role="region"
+      aria-label="Semester talks; scroll horizontally on small screens"
+      tabindex="0"
+    >
+      <table>
+        <caption class="sr-only">{semester} Cosmology Seminar talks</caption>
+        <thead>
+          <tr>
+            <th scope="col">Date</th>
+            <th scope="col">Time</th>
+            <th scope="col">Speaker</th>
+            <th scope="col">Talk</th>
+            <th scope="col">Location</th>
+            <th scope="col">Organizer</th>
+          </tr>
+        </thead>
+        <tbody>
+          {talks.map((talk) => (
+            <tr class:list={{ featured: talk.id === current?.id }}>
+              <td>
+                {talk.date ? (
+                  <time datetime={talk.date}>{formatDate(talk.date)}</time>
+                ) : (
+                  display(talk.date)
+                )}
+              </td>
+              <td>{formatTime(talk.time)}</td>
+              <td>
+                <span class="table-speaker">{display(talk.speaker)}</span>
+                {talk.affiliation && (
+                  <span class="table-affiliation">{talk.affiliation}</span>
+                )}
+              </td>
+              <td>
+                {talk.id === current?.id ? (
+                  <>
+                    <span class="featured-label">Featured talk</span>
+                    <a href={localUrl()}>{display(talk.title)}</a>
+                  </>
+                ) : (
+                  display(talk.title)
+                )}
+              </td>
+              <td>{display(talk.location)}</td>
+              <td>{display(talk.organizer)}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  ) : (
+    <p class="empty-state">The semester schedule will be announced soon.</p>
+  )}
+</Layout>

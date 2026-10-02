@@ -1,0 +1,70 @@
+---
+import "../styles/global.css";
+import { localUrl } from "../lib/site";
+interface Props {
+  title: string;
+  active: "home" | "schedule" | "speakers";
+  sample?: boolean;
+}
+const { title, active, sample = false } = Astro.props;
+const links = [
+  { id: "home", label: "Upcoming talk", href: "" },
+  { id: "schedule", label: "Semester schedule", href: "schedule/" },
+  { id: "speakers", label: "For speakers", href: "speakers/" },
+];
+const canonical = Astro.site
+  ? new URL(Astro.url.pathname, Astro.site)
+  : undefined;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Talks, semester schedule, and speaker information for the Yale Cosmology Seminar."
+    />
+    <title>{title} · Yale Cosmology Seminar</title>
+    {canonical && <link rel="canonical" href={canonical} />}
+  </head>
+  <body>
+    <a class="skip-link" href="#main">
+      Skip to content
+    </a>
+    <header class="site-header shell">
+      <a
+        class="brand"
+        href={localUrl()}
+        aria-label="Yale Cosmology Seminar home"
+      >
+        <span class="brand-yale" aria-hidden="true">&#xF2A2;</span>
+        <span class="brand-seminar">Cosmology Seminar</span>
+      </a>
+      <nav aria-label="Main navigation">
+        {links.map((link) => (
+          <a
+            href={localUrl(link.href)}
+            aria-current={active === link.id ? "page" : undefined}
+          >
+            {link.label}
+          </a>
+        ))}
+      </nav>
+    </header>
+    <main id="main" class="shell" tabindex="-1">
+      {sample && (
+        <aside class="sample-notice">
+          <strong>Sample content.</strong> These examples illustrate the layout
+          and are not scheduled seminar announcements.
+        </aside>
+      )}
+      <slot />
+    </main>
+    <footer class="site-footer shell">
+      <span>Yale Cosmology Seminar</span>
+      <span>New Haven, Connecticut · All times Eastern</span>
+    </footer>
+  </body>
+</html>
