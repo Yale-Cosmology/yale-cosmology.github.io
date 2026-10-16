@@ -26,8 +26,6 @@ The map above shows the options closest to Kline Tower, based on Yale's visitor 
 - **Free street parking** (green): Whitney Avenue north of Lawrence Street is unmetered, and the East Rock blocks east of it around Livingston Street, between Lawrence Street and Cold Spring Street, are outside any permit zone. From there it is a ten- to fifteen-minute walk back along Whitney Avenue and Sachem Street.
 - **Residential permit zones** (blue, dashed): the East Rock streets south of Lawrence Street, between Whitney Avenue and State Street, and the blocks west of Prospect Street around Tilton, Woodland, and Compton Streets are residential permit zones. Parking on the signed blocks there needs a resident permit during the posted hours.
 
-If you are a visiting speaker, your host can arrange parking for you; just ask.
-
 ## By train
 
 New Haven's Union Station is served by Amtrak, Metro-North from Grand Central, and Shore Line East. From the station, Kline Tower is about two miles north: a ten-minute taxi or ride-share, or take the Yale Shuttle or a CTtransit bus toward Science Hill and get off at Prospect and Sachem.
