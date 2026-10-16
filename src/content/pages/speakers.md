@@ -21,6 +21,10 @@ Please send your host your name, affiliation, talk title, abstract, and a headsh
 
 **Whom do I ask?** Your host for the week will be in touch before your visit. The organizers' emails are at the bottom of every page.
 
+## Office space
+
+You are welcome to use a desk in KT 639/641 to work and leave your things for the day. Please keep the KT 639 door unlocked while you are using it.
+
 ## Expenses
 
 If travel reimbursement applies to your visit, your host confirms it with you when the invitation is finalized and will send the department's instructions for submitting receipts. Please keep itemized receipts for train tickets, taxis, and parking.
