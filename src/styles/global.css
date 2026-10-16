@@ -18,34 +18,9 @@
 
   --measure: 44rem;
   --gutter: clamp(1rem, 4vw, 2.5rem);
+  color-scheme: light; /* the site is always light; dark mode is intentionally disabled */
 }
 
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme='light']) {
-    --yale-blue: #0b2a52;
-    --paper: #0f1623;
-    --paper-muted: #151e2d;
-    --ink: #e6e9ef;
-    --ink-soft: #b3bac6;
-    --ink-faint: #7b8595;
-    --rule: #2a3444;
-    --link: #a7c0e2;
-    --accent: #c9ab6e;
-    --label: #d2b57a;
-  }
-}
-:root[data-theme='dark'] {
-  --yale-blue: #0b2a52;
-  --paper: #0f1623;
-  --paper-muted: #151e2d;
-  --ink: #e6e9ef;
-  --ink-soft: #b3bac6;
-  --ink-faint: #7b8595;
-  --rule: #2a3444;
-  --link: #a7c0e2;
-  --accent: #c9ab6e;
-  --label: #d2b57a;
-}
 
 /* ---------- Base ---------- */
 *,
@@ -97,18 +72,6 @@ h3 {
   color: var(--yale-blue);
   margin: 0;
 }
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme='light']) h1,
-  :root:not([data-theme='light']) h2,
-  :root:not([data-theme='light']) h3 {
-    color: var(--ink);
-  }
-}
-:root[data-theme='dark'] h1,
-:root[data-theme='dark'] h2,
-:root[data-theme='dark'] h3 {
-  color: var(--ink);
-}
 p {
   margin: 0 0 1em;
 }
@@ -129,11 +92,6 @@ img {
 }
 .label--blue {
   color: var(--yale-blue);
-}
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme='light']) .label--blue {
-    color: var(--link);
-  }
 }
 .rule {
   border: 0;
