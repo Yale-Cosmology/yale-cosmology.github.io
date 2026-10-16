@@ -26,6 +26,8 @@ jobs:
       - name: Build site
         uses: withastro/action@v3
         # Site URL and base path come from astro.config.mjs (root of yale-cosmology.github.io).
+        with:
+          node-version: 24
 
   deploy:
     needs: build
