@@ -1,0 +1,53 @@
+---
+import { getEntry, render } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import { site, url } from '../site.config';
+
+const page = await getEntry('pages', 'speakers');
+if (!page) throw new Error('Missing src/content/pages/speakers.md');
+const { Content } = await render(page);
+---
+
+<Base title={page.data.title} description={page.data.description}>
+  <p class="label">For speakers</p>
+  <h1>{page.data.title}</h1>
+
+  <div class="prose">
+    <Content />
+  </div>
+
+  <hr class="rule" />
+  <section class="contact">
+    <p class="label label--blue">Organizers</p>
+    <ul>
+      {site.hosts.map((h) => (
+        <li>
+          {h.name} · <a href={`mailto:${h.email}`}>{h.email}</a>
+        </li>
+      ))}
+    </ul>
+    <p class="more"><a href={url('/visit/')}>Directions and parking →</a></p>
+  </section>
+</Base>
+
+<style>
+  h1 {
+    font-size: clamp(1.9rem, 5vw, 2.6rem);
+    margin: 0.3rem 0 1.6rem;
+  }
+  .prose :global(h2) {
+    margin-top: 2.2rem;
+  }
+  .contact ul {
+    list-style: none;
+    padding: 0;
+    margin: 0.5rem 0 0;
+    font-family: var(--sans);
+    font-size: 0.95rem;
+    line-height: 1.7;
+  }
+  .more {
+    font-family: var(--sans);
+    margin-top: 1rem;
+  }
+</style>

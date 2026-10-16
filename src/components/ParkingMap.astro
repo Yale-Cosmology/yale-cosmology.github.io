@@ -1,0 +1,246 @@
+---
+/**
+ * Interactive map of Kline Tower and nearby parking, drawn with Leaflet on a
+ * CARTO light basemap. The street geometry lives in src/data/parking.ts.
+ */
+---
+
+<figure class="map-figure">
+  <div id="parking-map" class="map" role="region" aria-label="Map of Kline Tower and nearby parking"></div>
+  <figcaption class="legend" aria-label="Map legend">
+    <span class="key"><i class="sw sw--kt"></i>Kline Tower</span>
+    <span class="key"><i class="sw sw--lot">P</i>Yale visitor lot</span>
+    <span class="key"><i class="sw sw--paid"></i>Metered street parking</span>
+    <span class="key"><i class="sw sw--free"></i>Free street parking</span>
+    <span class="key"><i class="sw sw--freearea"></i>Free parking area</span>
+    <span class="key"><i class="sw sw--res"></i>Residential permit zone</span>
+  </figcaption>
+</figure>
+
+<script>
+  import L from 'leaflet';
+  import 'leaflet/dist/leaflet.css';
+  import { parking, lots } from '../data/parking';
+
+  const el = document.getElementById('parking-map');
+  if (el) {
+    const colors = { paid: '#c2410c', free: '#15803d', res: '#1d4ed8', kt: '#00356b', gold: '#bd9b5e' };
+
+    const map = L.map(el, { scrollWheelZoom: false, zoomControl: true }).setView(parking.kt, 15);
+
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    }).addTo(map);
+
+    // Residential permit zones (shaded)
+    for (const zone of parking.residential) {
+      L.polygon(zone.coords as [number, number][], {
+        color: colors.res,
+        weight: 1.5,
+        opacity: 0.7,
+        fillColor: colors.res,
+        fillOpacity: 0.08,
+        dashArray: '4 4',
+      })
+        .bindPopup(`<b>${zone.name}</b><br>Residential permit parking. Non-permit vehicles are time-limited; check the signs.`)
+        .addTo(map);
+    }
+
+    // Free parking areas (no meters, no permit zone)
+    for (const area of parking.freeAreas) {
+      L.polygon(area.coords as [number, number][], {
+        color: colors.free,
+        weight: 1.5,
+        opacity: 0.7,
+        fillColor: colors.free,
+        fillOpacity: 0.1,
+      })
+        .bindPopup(`<b>${area.name}</b><br>Unmetered streets outside the residential permit zones. Check signs for street-cleaning days.`)
+        .addTo(map);
+    }
+
+    // Free street parking
+    for (const seg of parking.free) {
+      L.polyline(seg.coords as [number, number][], { color: colors.free, weight: 6, opacity: 0.85 })
+        .bindPopup(`<b>${seg.name}</b><br>Free, unmetered street parking.`)
+        .addTo(map);
+    }
+
+    // Metered street parking
+    for (const seg of parking.paid) {
+      L.polyline(seg.coords as [number, number][], { color: colors.paid, weight: 6, opacity: 0.85 })
+        .bindPopup(`<b>${seg.name}</b><br>${seg.note ?? 'Metered street parking.'}`)
+        .addTo(map);
+    }
+
+    // Yale visitor parking lots
+    const lotIcon = L.divIcon({
+      className: 'lot-marker',
+      html: '<span>P</span>',
+      iconSize: [26, 26],
+      iconAnchor: [13, 13],
+      popupAnchor: [0, -15],
+    });
+    for (const lot of lots) {
+      L.marker(lot.coords, { icon: lotIcon, title: `${lot.name}, ${lot.address}` })
+        .bindPopup(`<b>${lot.name}</b> · ${lot.address}<br>${lot.note}`)
+        .addTo(map);
+    }
+
+    // Kline Tower
+    const ktIcon = L.divIcon({
+      className: 'kt-marker',
+      html: '<span>KT</span>',
+      iconSize: [40, 40],
+      iconAnchor: [20, 20],
+      popupAnchor: [0, -22],
+    });
+    L.marker(parking.kt, { icon: ktIcon, title: 'Kline Tower' })
+      .bindPopup('<b>Kline Tower</b><br>219 Prospect Street<br>Seminar room KT 401, fourth floor')
+      .addTo(map);
+
+    // Entrance (small gold dot on the Sachem Street side)
+    L.circleMarker(parking.entrance, { radius: 6, color: '#fff', weight: 2, fillColor: colors.gold, fillOpacity: 1 })
+      .bindPopup('Entrance, Sachem Street side')
+      .addTo(map);
+
+    // Initial view: Kline Tower, the metered streets and the free stretch of
+    // Whitney Avenue. The large East Rock zone runs off to the east; pan to see it.
+    const focus = L.featureGroup([
+      L.marker(parking.kt),
+      ...lots.map((l) => L.marker(l.coords)),
+      ...parking.paid.map((s) => L.polyline(s.coords as [number, number][])),
+      ...parking.free.map((s) => L.polyline(s.coords as [number, number][])),
+    ]);
+    const fit = () => map.fitBounds(focus.getBounds().pad(0.06), { maxZoom: 16 });
+    fit();
+
+    // The container can change size after fonts and styles land; re-measure.
+    const refresh = () => {
+      map.invalidateSize();
+      fit();
+    };
+    requestAnimationFrame(refresh);
+    window.addEventListener('load', refresh, { once: true });
+  }
+</script>
+
+<style is:global>
+  .map-figure {
+    margin: 1.6rem 0 2rem;
+  }
+  .map {
+    width: 100%;
+    height: clamp(420px, 60vh, 560px);
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    background: var(--paper-muted);
+    font-family: var(--sans);
+  }
+  .leaflet-container {
+    font-family: var(--sans);
+    font-size: 0.85rem;
+  }
+  /* Soften the OSM basemap so the parking overlays stand out */
+  .leaflet-tile-pane {
+    filter: saturate(0.55) contrast(0.92) brightness(1.04);
+  }
+  .leaflet-popup-content {
+    font-family: var(--sans);
+    font-size: 0.9rem;
+    line-height: 1.4;
+    margin: 0.7rem 1rem;
+  }
+  .leaflet-popup-content-wrapper {
+    border-radius: 4px;
+  }
+  .kt-marker span {
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 4px;
+    background: #00356b;
+    color: #fff;
+    font-family: var(--sans);
+    font-weight: 700;
+    font-size: 0.95rem;
+    letter-spacing: 0.04em;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
+    border: 2px solid #fff;
+  }
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 1.4rem;
+    margin-top: 0.7rem;
+    font-family: var(--sans);
+    font-size: 0.85rem;
+    color: var(--ink-soft);
+  }
+  .key {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+  }
+  .sw {
+    display: inline-block;
+    width: 1.3rem;
+    height: 0.35rem;
+    border-radius: 2px;
+  }
+  .sw--kt {
+    width: 0.9rem;
+    height: 0.9rem;
+    background: #00356b;
+  }
+  .sw--lot {
+    width: 0.95rem;
+    height: 0.95rem;
+    border-radius: 50%;
+    background: #fff;
+    border: 2px solid #00356b;
+    color: #00356b;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 0.6rem;
+    line-height: 0.75rem;
+    text-align: center;
+  }
+  .lot-marker span {
+    display: grid;
+    place-items: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: #fff;
+    border: 2.5px solid #00356b;
+    color: #00356b;
+    font-family: var(--sans);
+    font-weight: 700;
+    font-size: 0.8rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  }
+  .sw--paid {
+    background: #c2410c;
+  }
+  .sw--free {
+    background: #15803d;
+  }
+  .sw--freearea {
+    height: 0.9rem;
+    background: rgba(21, 128, 61, 0.14);
+    border: 1.5px solid #15803d;
+  }
+  .sw--res {
+    height: 0.9rem;
+    background: rgba(29, 78, 216, 0.12);
+    border: 1.5px dashed #1d4ed8;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme='light']) .leaflet-container {
+      filter: none;
+    }
+  }
+</style>

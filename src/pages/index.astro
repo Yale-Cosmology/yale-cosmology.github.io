@@ -1,0 +1,97 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import TalkCard from '../components/TalkCard.astro';
+import { site, url, byDate, todayInNewHaven, formatShortDate, formatWeekday, isoDate } from '../site.config';
+
+const today = todayInNewHaven();
+const talks = (await getCollection('talks', ({ data }) => !data.draft)).sort(byDate);
+const upcoming = talks.filter((t) => t.data.date.getTime() >= today.getTime());
+
+// All talks on the next seminar date (usually one, sometimes two short talks).
+const nextDate = upcoming[0]?.data.date.getTime();
+const next = upcoming.filter((t) => t.data.date.getTime() === nextDate);
+// The two dates after that.
+const laterDates = [...new Set(upcoming.filter((t) => t.data.date.getTime() !== nextDate).map((t) => t.data.date.getTime()))].slice(0, 2);
+const later = upcoming.filter((t) => laterDates.includes(t.data.date.getTime()));
+---
+
+<Base>
+  {next.length > 0 ? (
+    <>
+      {next.map((talk, i) => (
+        <>
+          {i > 0 && <hr class="rule rule--talks" />}
+          <TalkCard talk={talk} eyebrow={i === 0 ? (next.length > 1 ? 'Next talks' : 'Next talk') : undefined} />
+        </>
+      ))}
+
+      {later.length > 0 && (
+        <section class="later" aria-labelledby="later-heading">
+          <hr class="rule" />
+          <p id="later-heading" class="label label--blue">Also coming up</p>
+          <ul>
+            {later.map((t) => (
+              <li>
+                <time datetime={isoDate(t.data.date)}>
+                  {formatWeekday(t.data.date)} {formatShortDate(t.data.date)}
+                </time>
+                <span class="who">
+                  <a href={url(`/talks/${t.id}/`)}>{t.data.speaker}</a>
+                  <span class="muted">, {t.data.affiliation}</span>
+                </span>
+              </li>
+            ))}
+          </ul>
+          <p class="all">
+            <a href={url('/schedule/')}>Full {site.semester} schedule →</a>
+          </p>
+        </section>
+      )}
+    </>
+  ) : (
+    <section class="concluded">
+      <p class="label">Next talk</p>
+      <h1>The {site.semester} series has concluded.</h1>
+      <p class="muted">
+        Thank you to all of our speakers. The next semester's schedule will be posted here once it is set. In the meantime
+        you can browse the <a href={url('/schedule/')}>past schedule</a>.
+      </p>
+    </section>
+  )}
+</Base>
+
+<style>
+  .rule--talks {
+    margin: 2.6rem 0;
+  }
+  .later ul {
+    list-style: none;
+    margin: 0.9rem 0 0;
+    padding: 0;
+    font-family: var(--sans);
+    font-size: 0.98rem;
+  }
+  .later li {
+    display: grid;
+    grid-template-columns: 7rem 1fr;
+    gap: 1rem;
+    padding: 0.45rem 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  .later li:last-child {
+    border-bottom: 0;
+  }
+  .later time {
+    color: var(--ink-soft);
+    font-variant-numeric: tabular-nums;
+  }
+  .all {
+    font-family: var(--sans);
+    margin-top: 1rem;
+  }
+  .concluded h1 {
+    font-size: clamp(1.7rem, 4vw, 2.3rem);
+    margin: 1rem 0 1rem;
+  }
+</style>

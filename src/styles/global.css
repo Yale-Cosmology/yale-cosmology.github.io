@@ -1,0 +1,176 @@
+/* ---------- Design tokens (mirrors the printed flyer) ---------- */
+:root {
+  --yale-blue: #00356b;
+  --yale-blue-deep: #0b2a52;
+  --accent: #bd9b5e;
+  --label: #9a7a3a; /* darker gold for small text on white */
+  --paper: #ffffff;
+  --paper-muted: #f6f7f9;
+  --ink: #1f2937;
+  --ink-soft: #4b5563;
+  --ink-faint: #8a93a1;
+  --rule: #d6dde7;
+  --link: #00356b;
+  --masthead-fg: #ffffff;
+
+  --serif: 'Source Serif 4 Variable', 'Source Serif 4', Charter, Georgia, 'Times New Roman', serif;
+  --sans: 'Source Sans 3 Variable', 'Source Sans 3', 'Helvetica Neue', Arial, sans-serif;
+
+  --measure: 44rem;
+  --gutter: clamp(1rem, 4vw, 2.5rem);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --yale-blue: #0b2a52;
+    --paper: #0f1623;
+    --paper-muted: #151e2d;
+    --ink: #e6e9ef;
+    --ink-soft: #b3bac6;
+    --ink-faint: #7b8595;
+    --rule: #2a3444;
+    --link: #a7c0e2;
+    --accent: #c9ab6e;
+    --label: #d2b57a;
+  }
+}
+:root[data-theme='dark'] {
+  --yale-blue: #0b2a52;
+  --paper: #0f1623;
+  --paper-muted: #151e2d;
+  --ink: #e6e9ef;
+  --ink-soft: #b3bac6;
+  --ink-faint: #7b8595;
+  --rule: #2a3444;
+  --link: #a7c0e2;
+  --accent: #c9ab6e;
+  --label: #d2b57a;
+}
+
+/* ---------- Base ---------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+html {
+  -webkit-text-size-adjust: 100%;
+  font-size: 17px;
+}
+@media (min-width: 720px) {
+  html {
+    font-size: 18px;
+  }
+}
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--serif);
+  line-height: 1.6;
+  font-feature-settings: 'kern', 'liga', 'onum';
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+main {
+  flex: 1;
+  width: 100%;
+  max-width: calc(var(--measure) + 2 * var(--gutter));
+  margin: 0 auto;
+  padding: clamp(2rem, 5vw, 3.5rem) var(--gutter) 3rem;
+}
+a {
+  color: var(--link);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.15em;
+}
+a:hover {
+  text-decoration-color: var(--accent);
+}
+h1,
+h2,
+h3 {
+  font-family: var(--serif);
+  font-weight: 450;
+  line-height: 1.15;
+  color: var(--yale-blue);
+  margin: 0;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) h1,
+  :root:not([data-theme='light']) h2,
+  :root:not([data-theme='light']) h3 {
+    color: var(--ink);
+  }
+}
+:root[data-theme='dark'] h1,
+:root[data-theme='dark'] h2,
+:root[data-theme='dark'] h3 {
+  color: var(--ink);
+}
+p {
+  margin: 0 0 1em;
+}
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* ---------- Shared utilities ---------- */
+.label {
+  font-family: var(--sans);
+  font-weight: 700;
+  font-size: 0.88rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--label);
+}
+.label--blue {
+  color: var(--yale-blue);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) .label--blue {
+    color: var(--link);
+  }
+}
+.rule {
+  border: 0;
+  border-top: 1px solid var(--rule);
+  margin: 2rem 0;
+}
+.muted {
+  color: var(--ink-soft);
+}
+.prose {
+  font-size: 1.02rem;
+}
+.prose h2 {
+  font-size: 1.35rem;
+  margin: 2rem 0 0.6rem;
+}
+.prose h2:first-child {
+  margin-top: 0;
+}
+.prose p + p {
+  margin-top: 0;
+}
+.prose ul {
+  padding-left: 1.2em;
+}
+.prose sub {
+  font-size: 0.72em;
+  line-height: 0;
+  vertical-align: baseline;
+  position: relative;
+  top: 0.28em;
+}
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}

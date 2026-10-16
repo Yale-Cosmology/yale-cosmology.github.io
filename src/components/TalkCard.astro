@@ -1,0 +1,139 @@
+---
+import { Image } from 'astro:assets';
+import { render, type CollectionEntry } from 'astro:content';
+import { site, formatLongDate, isoDate } from '../site.config';
+
+interface Props {
+  talk: CollectionEntry<'talks'>;
+  /** Render the speaker name as the page's h1 (front page) or an h2 (talk pages). */
+  headingLevel?: 'h1' | 'h2';
+  /** Show the "Next talk" eyebrow above the card. */
+  eyebrow?: string;
+}
+
+const { talk, headingLevel = 'h1', eyebrow } = Astro.props;
+const { data } = talk;
+const { Content, headings } = await render(talk);
+const hasAbstract = talk.body && talk.body.trim().length > 0;
+const Heading = headingLevel;
+const time = data.time ?? site.defaults.time;
+const room = data.room ?? site.defaults.room;
+---
+
+<article class="talk">
+  {eyebrow && <p class="label eyebrow">{eyebrow}</p>}
+
+  <div class="speaker">
+    {data.photo ? (
+      <Image class="photo" src={data.photo} alt={`Portrait of ${data.speaker}`} width={360} height={360} densities={[1, 2]} />
+    ) : (
+      <div class="photo photo--empty" aria-hidden="true"></div>
+    )}
+    <div class="who">
+      <Heading class="name">{data.speaker}</Heading>
+      <p class="affil">{data.affiliation}</p>
+      <dl class="details">
+        <div>
+          <dt class="label">Date</dt>
+          <dd><time datetime={isoDate(data.date)}>{formatLongDate(data.date)}</time></dd>
+        </div>
+        <div>
+          <dt class="label">Time</dt>
+          <dd>{time}</dd>
+        </div>
+        <div>
+          <dt class="label">Location</dt>
+          <dd>{room}<small>{site.defaults.building}</small></dd>
+        </div>
+      </dl>
+    </div>
+  </div>
+
+  <h2 class="title">{data.title ?? <span class="muted">Title to be announced</span>}</h2>
+
+  <div class="abstract prose">
+    {hasAbstract ? <Content /> : <p class="muted">Abstract to be announced.</p>}
+  </div>
+
+  {data.slides && (
+    <p class="slides">
+      <a href={data.slides}>Slides and materials</a>
+    </p>
+  )}
+</article>
+
+<style>
+  .eyebrow {
+    margin: 0 0 1.4rem;
+  }
+  .speaker {
+    display: grid;
+    grid-template-columns: minmax(0, 9.5rem) 1fr;
+    gap: 1.6rem;
+    align-items: center;
+  }
+  .photo {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    object-position: 50% 30%;
+    border-radius: 4px;
+  }
+  .photo--empty {
+    background: var(--paper-muted);
+    border: 1px solid var(--rule);
+  }
+  .name {
+    font-size: clamp(1.7rem, 4vw, 2.2rem);
+  }
+  .affil {
+    font-style: italic;
+    font-size: 1.1rem;
+    color: var(--ink-soft);
+    margin: 0.25rem 0 0;
+  }
+  .details {
+    margin: 1rem 0 0;
+    padding-top: 0.85rem;
+    border-top: 1px solid var(--rule);
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+    font-family: var(--sans);
+  }
+  .details div {
+    margin: 0;
+  }
+  .details dt {
+    margin: 0 0 0.2rem;
+  }
+  .details dd {
+    margin: 0;
+    font-size: 1.1rem;
+    line-height: 1.3;
+  }
+  .details small {
+    display: block;
+    font-size: 0.85rem;
+    color: var(--ink-soft);
+  }
+  .title {
+    font-size: clamp(1.45rem, 3.4vw, 1.9rem);
+    margin: 2.2rem 0 0.9rem;
+  }
+  .abstract {
+    color: var(--ink);
+  }
+  .slides {
+    font-family: var(--sans);
+    margin-top: 1rem;
+  }
+  @media (max-width: 560px) {
+    .speaker {
+      grid-template-columns: 1fr;
+    }
+    .photo {
+      width: 9rem;
+    }
+  }
+</style>

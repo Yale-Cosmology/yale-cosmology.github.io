@@ -1,0 +1,166 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import { site, url, byDate, todayInNewHaven, formatShortDate, formatWeekday, isoDate } from '../site.config';
+
+const today = todayInNewHaven();
+const talks = (await getCollection('talks', ({ data }) => !data.draft)).sort(byDate);
+const isPast = (d: Date) => d.getTime() < today.getTime();
+---
+
+<Base title="Schedule" description={`${site.semester} schedule of the ${site.series} ${site.title}.`}>
+  <p class="label">Schedule</p>
+  <h1>{site.semester}</h1>
+  <p class="meta muted">
+    {site.defaults.weekday} at {site.defaults.time} · {site.defaults.room}, {site.defaults.building}
+    <span class="nowrap">· <a href={url('/visit/')}>directions</a></span>
+  </p>
+
+  {talks.length === 0 ? (
+    <p class="muted">The schedule will be posted soon.</p>
+  ) : (
+    <table class="schedule">
+      <thead>
+        <tr>
+          <th scope="col">Date</th>
+          <th scope="col">Speaker</th>
+          <th scope="col">Title</th>
+        </tr>
+      </thead>
+      <tbody>
+        {talks.map((t) => (
+          <tr class:list={{ past: isPast(t.data.date) }}>
+            <td class="date">
+              <time datetime={isoDate(t.data.date)}>
+                <span class="wd">{formatWeekday(t.data.date)}</span> {formatShortDate(t.data.date)}
+              </time>
+            </td>
+            <td class="speaker">
+              <a href={url(`/talks/${t.id}/`)}>{t.data.speaker}</a>
+              <span class="affil">{t.data.affiliation}</span>
+            </td>
+            <td class="title">
+              {t.data.title ? (
+                <a href={url(`/talks/${t.id}/`)}>{t.data.title}</a>
+              ) : (
+                <a class="muted" href={url(`/talks/${t.id}/`)}>To be announced</a>
+              )}
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  )}
+</Base>
+
+<style>
+  h1 {
+    font-size: clamp(1.9rem, 5vw, 2.6rem);
+    margin: 0.3rem 0 0.4rem;
+  }
+  .meta {
+    font-family: var(--sans);
+    font-size: 0.95rem;
+    margin-bottom: 2rem;
+  }
+  .nowrap {
+    white-space: nowrap;
+  }
+  .schedule {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.98rem;
+  }
+  thead th {
+    text-align: left;
+    font-family: var(--sans);
+    font-weight: 700;
+    font-size: 0.88rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--label);
+    padding: 0 0.8rem 0.6rem 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  td {
+    vertical-align: top;
+    padding: 0.85rem 0.8rem 0.85rem 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  td:last-child,
+  th:last-child {
+    padding-right: 0;
+  }
+  .date {
+    white-space: nowrap;
+    font-family: var(--sans);
+    font-variant-numeric: tabular-nums;
+    width: 7.5rem;
+  }
+  .wd {
+    color: var(--ink-soft);
+  }
+  .speaker a {
+    font-weight: 500;
+    text-decoration: none;
+  }
+  .title a {
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .title a.muted {
+    color: var(--ink-soft);
+  }
+  .speaker a:hover,
+  .title a:hover {
+    text-decoration: underline;
+    text-decoration-color: var(--accent);
+  }
+  .affil {
+    display: block;
+    font-style: italic;
+    font-size: 0.9rem;
+    color: var(--ink-soft);
+  }
+  .past {
+    color: var(--ink-faint);
+  }
+  .past .affil,
+  .past .wd,
+  .past .muted {
+    color: var(--ink-faint);
+  }
+  .past .speaker a,
+  .past .title a {
+    color: var(--ink-faint);
+  }
+
+  @media (max-width: 640px) {
+    thead {
+      display: none;
+    }
+    .schedule,
+    tbody,
+    tr,
+    td {
+      display: block;
+    }
+    tr {
+      padding: 0.9rem 0;
+      border-bottom: 1px solid var(--rule);
+    }
+    td {
+      padding: 0;
+      border: 0;
+    }
+    .date {
+      width: auto;
+      font-size: 0.82rem;
+      letter-spacing: 0.04em;
+      margin-bottom: 0.2rem;
+    }
+    .title {
+      margin-top: 0.3rem;
+    }
+  }
+</style>

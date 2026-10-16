@@ -1,0 +1,35 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import TalkCard from '../../components/TalkCard.astro';
+import { url, formatLongDate } from '../../site.config';
+
+export async function getStaticPaths() {
+  const talks = await getCollection('talks', ({ data }) => !data.draft);
+  return talks.map((talk) => ({ params: { slug: talk.id }, props: { talk } }));
+}
+
+const { talk } = Astro.props;
+const pageTitle = talk.data.title ? `${talk.data.speaker}: ${talk.data.title}` : talk.data.speaker;
+const description = `${talk.data.speaker} (${talk.data.affiliation}), ${formatLongDate(talk.data.date)}.`;
+---
+
+<Base title={pageTitle} description={description}>
+  <p class="back"><a href={url('/schedule/')}>← Schedule</a></p>
+  <TalkCard talk={talk} headingLevel="h1" />
+</Base>
+
+<style>
+  .back {
+    font-family: var(--sans);
+    font-size: 0.9rem;
+    margin: 0 0 1.6rem;
+  }
+  .back a {
+    text-decoration: none;
+    color: var(--ink-soft);
+  }
+  .back a:hover {
+    color: var(--link);
+  }
+</style>

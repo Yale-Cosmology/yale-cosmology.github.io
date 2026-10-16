@@ -1,0 +1,110 @@
+---
+import { site, url } from '../site.config';
+import RingMotif from './RingMotif.astro';
+
+const tabs = [
+  { href: url('/'), label: 'Upcoming' },
+  { href: url('/schedule/'), label: 'Schedule' },
+  { href: url('/visit/'), label: 'Visit' },
+  { href: url('/speakers/'), label: 'Speakers' },
+];
+
+const current = Astro.url.pathname.replace(/\/$/, '') || '/';
+const isActive = (href: string) => (href.replace(/\/$/, '') || '/') === current;
+---
+
+<header class="masthead">
+  <RingMotif />
+  <div class="inner">
+    <p class="series"><b>Yale</b> Physics <span aria-hidden="true">×</span><span class="visually-hidden">and</span> Astronomy</p>
+    <div class="titlerow">
+      <a class="title" href={url('/')}>{site.title}</a>
+      <span class="semester">{site.semester}</span>
+    </div>
+    <div class="hairline" role="presentation"></div>
+    <nav class="tabs" aria-label="Main">
+      {tabs.map((t) => (
+        <a href={t.href} aria-current={isActive(t.href) ? 'page' : undefined}>{t.label}</a>
+      ))}
+    </nav>
+  </div>
+</header>
+
+<style>
+  .masthead {
+    position: relative;
+    background: var(--yale-blue);
+    color: var(--masthead-fg);
+    overflow: hidden;
+  }
+  .inner {
+    position: relative;
+    max-width: calc(var(--measure) + 2 * var(--gutter));
+    margin: 0 auto;
+    padding: clamp(1.6rem, 4vw, 2.6rem) var(--gutter) 0;
+  }
+  .series {
+    margin: 0;
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 0.78rem;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.78);
+  }
+  .series b {
+    color: #fff;
+    font-weight: 600;
+  }
+  .titlerow {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-top: 0.35rem;
+  }
+  .title {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(2.2rem, 7vw, 3.6rem);
+    line-height: 1;
+    letter-spacing: -0.01em;
+    color: #fff;
+    text-decoration: none;
+  }
+  .semester {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: clamp(1.05rem, 2.6vw, 1.35rem);
+    color: rgba(255, 255, 255, 0.85);
+  }
+  .hairline {
+    height: 1px;
+    margin-top: 1.4rem;
+    background: linear-gradient(90deg, var(--accent) 0, var(--accent) 7rem, rgba(255, 255, 255, 0.28) 7rem, rgba(255, 255, 255, 0.28) 100%);
+  }
+  .tabs {
+    display: flex;
+    gap: clamp(1.2rem, 4vw, 2.4rem);
+  }
+  .tabs a {
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 0.82rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.72);
+    text-decoration: none;
+    padding: 0.95rem 0 0.85rem;
+    border-bottom: 2px solid transparent;
+    transition: color 120ms ease, border-color 120ms ease;
+  }
+  .tabs a:hover {
+    color: #fff;
+  }
+  .tabs a[aria-current='page'] {
+    color: #fff;
+    border-bottom-color: var(--accent);
+  }
+</style>

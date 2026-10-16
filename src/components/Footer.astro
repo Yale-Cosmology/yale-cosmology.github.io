@@ -1,0 +1,59 @@
+---
+import { site } from '../site.config';
+---
+
+<footer class="footer">
+  <div class="inner">
+    <div class="hosts">
+      <p class="label label--blue">Organizers</p>
+      <ul>
+        {site.hosts.map((h) => (
+          <li>
+            {h.name} <span class="muted">· <a href={`mailto:${h.email}`}>{h.email}</a></span>
+          </li>
+        ))}
+      </ul>
+    </div>
+    <p class="funding">{site.funding}</p>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    border-top: 1px solid var(--rule);
+    background: var(--paper-muted);
+  }
+  .inner {
+    max-width: calc(var(--measure) + 2 * var(--gutter));
+    margin: 0 auto;
+    padding: 1.8rem var(--gutter) 2.2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+  .hosts .label {
+    margin: 0 0 0.4rem;
+  }
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    font-family: var(--sans);
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+  .funding {
+    margin: 0;
+    font-style: italic;
+    font-size: 0.92rem;
+    color: var(--ink-soft);
+    max-width: 20rem;
+  }
+  @media (max-width: 640px) {
+    .funding {
+      max-width: none;
+    }
+  }
+</style>
