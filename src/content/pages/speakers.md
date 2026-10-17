@@ -23,7 +23,7 @@ Please send your host your name, affiliation, talk title, abstract, and a headsh
 
 ## Office space
 
-You are welcome to use a desk in KT 639/641 to work and leave your things for the day. Please keep the KT 639 door unlocked while you are using it.
+You are welcome to use a desk in KT 639/641 for the day. The KT 639 door must stay unlocked all day.
 
 ## Expenses
 
