@@ -26,6 +26,8 @@ const talks = defineCollection({
       title: z.string().optional(),
       /** Portrait, relative to this file, e.g. ../../assets/speakers/name.jpg */
       photo: image().optional(),
+      /** Alt text for the photo, e.g. when a joint talk has only one speaker's portrait. */
+      photoAlt: z.string().optional(),
       /** Link to slides or a recording, shown after the talk. */
       slides: z.string().url().optional(),
       /** Set to true to hide the talk from the site without deleting the file. */

@@ -25,7 +25,7 @@ const room = data.room ?? site.defaults.room;
 
   <div class="speaker">
     {data.photo ? (
-      <Image class="photo" src={data.photo} alt={`Portrait of ${data.speaker}`} width={360} height={360} densities={[1, 2]} />
+      <Image class="photo" src={data.photo} alt={data.photoAlt ?? `Portrait of ${data.speaker}`} width={360} height={360} densities={[1, 2]} />
     ) : (
       <div class="photo photo--empty" aria-hidden="true"></div>
     )}

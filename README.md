@@ -27,10 +27,11 @@ The abstract goes here, in Markdown. Blank lines separate paragraphs.
 |---|---|---|
 | `speaker` | yes | Use "A & B" for two speakers. |
 | `affiliation` | yes | |
-| `date` | yes | `YYYY-MM-DD`. Two talks on the same date are fine: make one file per speaker and set `order: 1` and `order: 2`. The front page shows both. |
+| `date` | yes | `YYYY-MM-DD`. Two separate talks on the same date are fine: make one file per talk and set `order: 1` and `order: 2`. The front page shows both. For a joint talk, use one file with `speaker: A & B`. |
 | `title` | no | Omit until announced; the site shows "To be announced". |
 | `host` | no | Internal note of who is hosting. Not shown on the site. |
 | `photo` | no | Put the image in `src/assets/speakers/` and reference it as `../../assets/speakers/file.jpg`. Square-ish portraits work best; the site crops to a square. |
+| `photoAlt` | no | Alt text for the photo, if it should not read "Portrait of" plus the speaker field. |
 | `time`, `room` | no | Only if the talk differs from the series default. |
 | `slides` | no | A URL, shown after the abstract. |
 | `draft` | no | `true` hides the talk without deleting the file. |
