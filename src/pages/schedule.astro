@@ -34,7 +34,9 @@ const isPast = (d: Date) => d.getTime() < today.getTime();
               <time datetime={isoDate(t.data.date)}>
                 <span class="wd">{formatWeekday(t.data.date)}</span> {formatShortDate(t.data.date)}
               </time>
-              {t.data.time && t.data.time !== site.defaults.time && <span class="time-note">{t.data.time}</span>}
+              <span class:list={['time-note', { 'time-note--changed': t.data.time && t.data.time !== site.defaults.time }]}>
+                {t.data.time ?? site.defaults.time}
+              </span>
             </td>
             <td class="speaker">
               <a href={url(`/talks/${t.id}/`)}>{t.data.speaker}</a>
@@ -103,8 +105,11 @@ const isPast = (d: Date) => d.getTime() < today.getTime();
   }
   .time-note {
     display: block;
-    font-weight: 700;
     font-size: 0.85rem;
+    color: var(--ink-soft);
+  }
+  .time-note--changed {
+    font-weight: 700;
     color: #b42318;
   }
   .speaker a {
@@ -134,6 +139,7 @@ const isPast = (d: Date) => d.getTime() < today.getTime();
   }
   .past .affil,
   .past .wd,
+  .past .time-note,
   .past .muted {
     color: var(--ink-faint);
   }
