@@ -22,3 +22,10 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# Flyer PDFs are build output (flyer/build.sh)
+flyer/*.pdf
+
+# Syncthing conflict copies and version folders
+*.sync-conflict-*
+.stversions/
