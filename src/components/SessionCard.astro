@@ -1,0 +1,126 @@
+---
+/**
+ * Two or more talks in the same session (same date, time and room):
+ * one session header with the shared details, then the talks stacked as "Talk 1", "Talk 2", ...
+ */
+import { Image } from 'astro:assets';
+import { render, type CollectionEntry } from 'astro:content';
+import { site, formatLongDate, isoDate } from '../site.config';
+
+interface Props {
+  talks: CollectionEntry<'talks'>[];
+  eyebrow?: string;
+}
+
+const { talks, eyebrow = 'Next seminar' } = Astro.props;
+const first = talks[0].data;
+const time = first.time ?? site.defaults.time;
+const room = first.room ?? site.defaults.room;
+const items = await Promise.all(
+  talks.map(async (talk) => ({ talk, Content: (await render(talk)).Content, hasAbstract: !!talk.body?.trim() })),
+);
+const countWord = ['', 'One talk', 'Two talks', 'Three talks', 'Four talks'][talks.length] ?? `${talks.length} talks`;
+---
+
+<section class="session">
+  <header class="session-head">
+    <p class="label">{eyebrow} · {countWord}</p>
+    <h1 class="when"><time datetime={isoDate(first.date)}>{formatLongDate(first.date)}</time></h1>
+    <p class="meta">{time} · {room}, {site.defaults.building}</p>
+  </header>
+
+  {items.map(({ talk, Content, hasAbstract }, i) => (
+    <article class="talk">
+      <div class="head">
+        {talk.data.photo ? (
+          <Image class="photo" src={talk.data.photo} alt={talk.data.photoAlt ?? `Portrait of ${talk.data.speaker}`} width={240} height={240} densities={[1, 2]} />
+        ) : (
+          <div class="photo photo--empty" aria-hidden="true"></div>
+        )}
+        <div>
+          <p class="num">Talk {i + 1}</p>
+          <h2 class="name">{talk.data.speaker}</h2>
+          <p class="affil">{talk.data.affiliation}</p>
+        </div>
+      </div>
+      <h3 class="title">{talk.data.title ?? <span class="muted">Title to be announced</span>}</h3>
+      <div class="prose abstract">
+        {hasAbstract ? <Content /> : <p class="muted">Abstract to be announced.</p>}
+      </div>
+      {talk.data.slides && (
+        <p class="slides"><a href={talk.data.slides}>Slides and materials</a></p>
+      )}
+    </article>
+  ))}
+</section>
+
+<style>
+  .session-head {
+    border-left: 4px solid var(--accent);
+    padding: 0.2rem 0 0.3rem 1.1rem;
+    margin-bottom: 1.6rem;
+  }
+  .session-head .label {
+    margin: 0 0 0.3rem;
+  }
+  .when {
+    font-size: clamp(1.6rem, 4vw, 2.1rem);
+    line-height: 1.15;
+  }
+  .meta {
+    font-family: var(--sans);
+    font-size: 1.1rem;
+    margin: 0.3rem 0 0;
+    color: var(--ink);
+  }
+  .talk {
+    padding: 1.4rem 0;
+    border-top: 1px solid var(--rule);
+  }
+  .talk:last-child {
+    padding-bottom: 0;
+  }
+  .head {
+    display: grid;
+    grid-template-columns: 5.5rem 1fr;
+    gap: 1.1rem;
+    align-items: center;
+  }
+  .photo {
+    width: 5.5rem;
+    aspect-ratio: 1;
+    object-fit: cover;
+    object-position: 50% 30%;
+    border-radius: 4px;
+  }
+  .photo--empty {
+    background: var(--paper-muted);
+    border: 1px solid var(--rule);
+  }
+  .num {
+    font-family: var(--sans);
+    font-weight: 700;
+    font-size: 0.78rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin: 0;
+  }
+  .name {
+    font-size: 1.6rem;
+    margin: 0.1rem 0 0;
+  }
+  .affil {
+    font-style: italic;
+    color: var(--ink-soft);
+    margin: 0.1rem 0 0;
+  }
+  .title {
+    font-size: clamp(1.25rem, 3vw, 1.45rem);
+    margin: 1rem 0 0.6rem;
+  }
+  .slides {
+    font-family: var(--sans);
+    margin-top: 1rem;
+  }
+</style>

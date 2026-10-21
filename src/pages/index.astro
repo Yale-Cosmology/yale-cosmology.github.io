@@ -2,6 +2,7 @@
 import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import TalkCard from '../components/TalkCard.astro';
+import SessionCard from '../components/SessionCard.astro';
 import { site, url, byDate, todayInNewHaven, formatShortDate, formatWeekday, isoDate } from '../site.config';
 
 const today = todayInNewHaven();
@@ -14,17 +15,27 @@ const next = upcoming.filter((t) => t.data.date.getTime() === nextDate);
 // The two dates after that.
 const laterDates = [...new Set(upcoming.filter((t) => t.data.date.getTime() !== nextDate).map((t) => t.data.date.getTime()))].slice(0, 2);
 const later = upcoming.filter((t) => laterDates.includes(t.data.date.getTime()));
+
+// Several talks at the same time and place form one session: show the shared details once.
+const timeOf = (t: (typeof talks)[number]) => t.data.time ?? site.defaults.time;
+const roomOf = (t: (typeof talks)[number]) => t.data.room ?? site.defaults.room;
+const isSession =
+  next.length > 1 && next.every((t) => timeOf(t) === timeOf(next[0]) && roomOf(t) === roomOf(next[0]));
 ---
 
 <Base>
   {next.length > 0 ? (
     <>
-      {next.map((talk, i) => (
-        <>
-          {i > 0 && <hr class="rule rule--talks" />}
-          <TalkCard talk={talk} eyebrow={i === 0 ? (next.length > 1 ? 'Next talks' : 'Next talk') : undefined} />
-        </>
-      ))}
+      {isSession ? (
+        <SessionCard talks={next} />
+      ) : (
+        next.map((talk, i) => (
+          <>
+            {i > 0 && <hr class="rule rule--talks" />}
+            <TalkCard talk={talk} eyebrow={i === 0 ? (next.length > 1 ? 'Next talks' : 'Next talk') : undefined} />
+          </>
+        ))
+      )}
 
       {later.length > 0 && (
         <section class="later" aria-labelledby="later-heading">

@@ -16,7 +16,7 @@
   --serif: 'Source Serif 4 Variable', 'Source Serif 4', Charter, Georgia, 'Times New Roman', serif;
   --sans: 'Source Sans 3 Variable', 'Source Sans 3', 'Helvetica Neue', Arial, sans-serif;
 
-  --measure: 44rem;
+  --measure: 52rem;
   --gutter: clamp(1rem, 4vw, 2.5rem);
   color-scheme: light; /* the site is always light; dark mode is intentionally disabled */
 }
