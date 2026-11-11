@@ -23,11 +23,9 @@ const room = data.room ?? site.defaults.room;
 <article class="talk">
   {eyebrow && <p class="label eyebrow">{eyebrow}</p>}
 
-  <div class="speaker">
-    {data.photo ? (
+  <div class:list={['speaker', { 'speaker--no-photo': !data.photo }]}>
+    {data.photo && (
       <Image class="photo" src={data.photo} alt={data.photoAlt ?? `Portrait of ${data.speaker}`} width={360} height={360} densities={[1, 2]} />
-    ) : (
-      <div class="photo photo--empty" aria-hidden="true"></div>
     )}
     <div class="who">
       <Heading class="name">{data.speaker}</Heading>
@@ -79,9 +77,8 @@ const room = data.room ?? site.defaults.room;
     object-position: 50% 30%;
     border-radius: 4px;
   }
-  .photo--empty {
-    background: var(--paper-muted);
-    border: 1px solid var(--rule);
+  .speaker--no-photo {
+    grid-template-columns: 1fr;
   }
   .name {
     font-size: clamp(1.7rem, 4vw, 2.2rem);

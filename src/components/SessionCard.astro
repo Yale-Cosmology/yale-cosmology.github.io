@@ -31,11 +31,9 @@ const countWord = ['', 'One talk', 'Two talks', 'Three talks', 'Four talks'][tal
 
   {items.map(({ talk, Content, hasAbstract }, i) => (
     <article class="talk">
-      <div class="head">
-        {talk.data.photo ? (
+      <div class:list={['head', { 'head--no-photo': !talk.data.photo }]}>
+        {talk.data.photo && (
           <Image class="photo" src={talk.data.photo} alt={talk.data.photoAlt ?? `Portrait of ${talk.data.speaker}`} width={240} height={240} densities={[1, 2]} />
-        ) : (
-          <div class="photo photo--empty" aria-hidden="true"></div>
         )}
         <div>
           <p class="num">Talk {i + 1}</p>
@@ -93,9 +91,8 @@ const countWord = ['', 'One talk', 'Two talks', 'Three talks', 'Four talks'][tal
     object-position: 50% 30%;
     border-radius: 4px;
   }
-  .photo--empty {
-    background: var(--paper-muted);
-    border: 1px solid var(--rule);
+  .head--no-photo {
+    grid-template-columns: 1fr;
   }
   .num {
     font-family: var(--sans);
